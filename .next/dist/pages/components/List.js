@@ -28,8 +28,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _list = require('./../styled/list.styles');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _jsxFileName = '/Users/fernandocasaliba/GitHub/todoApp/pages/components/List.js';
@@ -38,41 +36,27 @@ var _jsxFileName = '/Users/fernandocasaliba/GitHub/todoApp/pages/components/List
 var List = function (_Component) {
   (0, _inherits3.default)(List, _Component);
 
-  function List() {
+  function List(props) {
     (0, _classCallCheck3.default)(this, List);
 
-    return (0, _possibleConstructorReturn3.default)(this, (List.__proto__ || (0, _getPrototypeOf2.default)(List)).apply(this, arguments));
+    return (0, _possibleConstructorReturn3.default)(this, (List.__proto__ || (0, _getPrototypeOf2.default)(List)).call(this, props));
   }
 
   (0, _createClass3.default)(List, [{
     key: 'render',
-    value: function render() {
-      return _react2.default.createElement(_list.ListItems, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 8
-        }
-      }, _react2.default.createElement('li', {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 9
-        }
-      }, 'hola'), _react2.default.createElement('li', {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 10
-        }
-      }, 'hola'), _react2.default.createElement('li', {
+    value: function render(props) {
+
+      return _react2.default.createElement('li', {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 11
         }
-      }, 'hola'), _react2.default.createElement('li', {
+      }, _react2.default.createElement('aside', {
         __source: {
           fileName: _jsxFileName,
           lineNumber: 12
         }
-      }, 'hola'));
+      }), this.props.cards);
     }
   }]);
 

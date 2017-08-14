@@ -46,47 +46,67 @@ var Search = function (_Component) {
     // Set initial state
     var _this = (0, _possibleConstructorReturn3.default)(this, (Search.__proto__ || (0, _getPrototypeOf2.default)(Search)).call(this));
 
+    _this.onChangeText = function (event) {
+      event.preventDefault();
+
+      // Asigna nuevo state
+      _this.setState({ typed: event.target.value });
+    };
+
+    _this.onSaveCard = function (event) {
+      event.preventDefault();
+      var newCard = _this.state.typed;
+
+      // Resetea value e input
+      _this.setState({ typed: '' });
+      _this.setState({ inputText: '' });
+
+      console.log(newCard);
+    };
+
     _this.state = {
-      'typed': 'text'
+      'inputText': '',
+      'typed': ''
     };
 
     // Maneja el cambio de texto del input
-    _this.changeText = _this.changeText.bind(_this);
+    _this.onChangeText = _this.onChangeText.bind(_this);
     return _this;
   }
 
+  // Acción de cambio de texto
+
+
+  // Guardar tarjeta
+
+
   (0, _createClass3.default)(Search, [{
-    key: 'changeText',
-    value: function changeText(event) {
-      event.preventDefault();
-      this.setState({ typed: event.target.value });
-    }
-  }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_general.SearchBox, { onSubmit: this.changeText, __source: {
+      return _react2.default.createElement(_general.SearchBox, { onSubmit: this.onSaveCard, __source: {
           fileName: _jsxFileName,
-          lineNumber: 26
+          lineNumber: 42
         }
-      }, _react2.default.createElement('input', { placeholder: 'Agregar...',
-        onChange: this.changeText, __source: {
+      }, _react2.default.createElement('input', { placeholder: 'Agregar texto...',
+        value: this.state.typed,
+        onChange: this.onChangeText, __source: {
           fileName: _jsxFileName,
-          lineNumber: 28
+          lineNumber: 44
         }
-      }), _react2.default.createElement(_general.Button, { type: 'submit',
-        primary: true, __source: {
+      }), _react2.default.createElement(_general.Button, { primary: true,
+        type: 'submit', __source: {
           fileName: _jsxFileName,
-          lineNumber: 31
+          lineNumber: 48
         }
       }, 'Guardar'), _react2.default.createElement('br', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 33
+          lineNumber: 51
         }
       }), _react2.default.createElement(_general.NewCard, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 35
+          lineNumber: 53
         }
       }, this.state.typed));
     }

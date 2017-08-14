@@ -1,15 +1,10 @@
-import Search from './components/Search';
-import List from './components/List';
+import Home from './container/Home';
 
 // styles
 import {injectGlobal} from './styled/global.styles';
-import {Container} from './styled/general.styles';
 
 const Index = () => (
-  <Container>
-    <Search />
-    <List />
-  </Container>
+  <Home />
 )
 
 export default Index;

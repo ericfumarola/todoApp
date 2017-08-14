@@ -13,4 +13,11 @@ injectGlobal`
     background-color:white;
     font-family: 'Raleway', sans-serif;
   }
+
+  ul {
+    padding:0;
+    li {
+      list-style-type:none;
+    }
+  }
 `;

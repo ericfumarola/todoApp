@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
-import {ListItems} from './../styled/list.styles';
 
 class List extends Component {
+  constructor(props) {
+    super(props)
+  }
 
-  render() {
+  render(props) {
+
     return (
-      <ListItems>
-        <li>hola</li>
-        <li>hola</li>
-        <li>hola</li>
-        <li>hola</li>
-      </ListItems>
+      <li>
+        <aside></aside>
+        {this.props.cards}
+      </li>
     );
   }
 
 }
+
 
 export default List;
