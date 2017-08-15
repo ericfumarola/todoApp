@@ -32,10 +32,6 @@ var _Search = require('./../components/Search');
 
 var _Search2 = _interopRequireDefault(_Search);
 
-var _List = require('./../components/List');
-
-var _List2 = _interopRequireDefault(_List);
-
 var _general = require('./../styled/general.styles');
 
 var _list = require('./../styled/list.styles');
@@ -64,6 +60,7 @@ var Home = function (_Component) {
     var _this = (0, _possibleConstructorReturn3.default)(this, (Home.__proto__ || (0, _getPrototypeOf2.default)(Home)).call(this, props));
 
     _this.addNote = _this.addNote.bind(_this);
+    _this.removeNote = _this.removeNote.bind(_this);
 
     _this.state = {
       notes: [{
@@ -76,26 +73,30 @@ var Home = function (_Component) {
 
   (0, _createClass3.default)(Home, [{
     key: 'componentWillMount',
-    value: function componentWillMount() {
-      // const prevNotes = this.state.notes;
-      //
-      // this.app = firebase.initializeApp(DbFirebase);
-      // this.database.on('value', (snap) => {
-      //   prevNotes.push({
-      //     content : snapshot.val().content,
-      //     id      : snap.key
-      //   })
-      //
-      //   this.setState({
-      //     notes:prevNotes
-      //   })
-      // })
-    }
+    value: function componentWillMount() {}
+    // const prevNotes = this.state.notes;
+    //
+    // this.app = firebase.initializeApp(DbFirebase);
+    // this.database.on('value', (snap) => {
+    //   prevNotes.push({
+    //     content : snapshot.val().content,
+    //     id      : snap.key
+    //   })
+    //
+    //   this.setState({
+    //     notes:prevNotes
+    //   })
+    // })
+
+
+    // Add note
+
   }, {
     key: 'addNote',
     value: function addNote(note) {
       // this.database.push().set({content:note})
       var previousNotes = this.state.notes;
+
       previousNotes.push({
         id: previousNotes.length + 1,
         content: note
@@ -104,32 +105,47 @@ var Home = function (_Component) {
       this.setState({
         notes: previousNotes
       });
-
-      console.log(previousNotes);
+    }
+  }, {
+    key: 'removeNote',
+    value: function removeNote(id) {
+      this.setState({
+        notes: this.state.notes.filter(function (el) {
+          return id !== el.id;
+        })
+      });
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(_general.Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 70
+          lineNumber: 77
         }
       }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
           fileName: _jsxFileName,
-          lineNumber: 71
+          lineNumber: 78
         }
       }), _react2.default.createElement(_list.ListItems, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 72
+          lineNumber: 79
         }
-      }, this.state.notes.map(function (note, index) {
-        return _react2.default.createElement(_List2.default, { cards: note.content, key: note.id, __source: {
+      }, this.state.notes.map(function (note) {
+        return _react2.default.createElement('li', { id: note.id, key: note.id, __source: {
             fileName: _jsxFileName,
-            lineNumber: 73
+            lineNumber: 80
           }
-        });
+        }, _react2.default.createElement('aside', { onClick: function onClick() {
+            return _this2.removeNote(note.id);
+          }, __source: {
+            fileName: _jsxFileName,
+            lineNumber: 80
+          }
+        }), note.content);
       })));
     }
   }]);

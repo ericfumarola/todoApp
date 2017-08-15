@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 
 class List extends Component {
-  constructor(props) {
-    super(props)
-  }
 
-  render(props) {
-
+  render() {
     return (
-      <li>
+      <li id={this.props.id} key={this.props.key}>
         <aside></aside>
         {this.props.cards}
       </li>
