@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {DbFirebase} from './../database/DbFirebase';
-import firebase from 'firebase';
+// import {DbFirebase} from './../database/DbFirebase';
+// import firebase from 'firebase';
 import Search from './../components/Search';
 import List from './../components/List';
 
@@ -10,84 +10,67 @@ import {ListItems} from './../styled/list.styles';
 
 //
 // if (!firebase.apps.length) {
-//
+//   firebase.initializeApp(DbFirebase)
 // }
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.app = firebase.initializeApp(DbFirebase),
-    this.db  = this.app.firebase.database().ref().child('notes');
+    this.addNote = this.addNote.bind(this);
+
     this.state = {
       notes : [
         {
           content: [
-            'saraza',
-            'tu vieja',
-            'sasas',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa'
+            'sasasa 1'
           ],
           id : [
-            'saraza',
-            'tu vieja',
-            'sasas',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa'
-          ],
-        },
-        {
-          content: [
-            'saraza',
-            'tu vieja',
-            'sasas',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa'
-          ],
-          id : [
-            'saraza',
-            'tu vieja',
-            'sasas',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa',
-            'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa'
-          ],
+            '1'
+          ]
         }
-      ],
-
+      ]
     }
-
   }
 
   componentWillMount() {
-    const prevNotes = this.state.notes;
-
-    this.database.on('value', (snap) => {
-      prevNotes.push({
-        content : snapshot.val().content,
-        id      : snap.key
-      })
-
-      this.setState({
-        notes:prevNotes
-      })
-    })
+    // const prevNotes = this.state.notes;
+    //
+    // this.app = firebase.initializeApp(DbFirebase);
+    // this.database.on('value', (snap) => {
+    //   prevNotes.push({
+    //     content : snapshot.val().content,
+    //     id      : snap.key
+    //   })
+    //
+    //   this.setState({
+    //     notes:prevNotes
+    //   })
+    // })
   }
 
   addNote(note) {
-    this.database.push().set({content:note})
+    // this.database.push().set({content:note})
+    const previousNotes = this.state.notes;
+    previousNotes.push({
+      id : previousNotes.length + 1,
+      content: note
+    });
+
+    this.setState({
+      notes : previousNotes
+    })
+
+    console.log(previousNotes)
+
   }
 
   render () {
     return (
       <Container>
-        <Search />
+        <Search addNote={this.addNote} />
         <ListItems>
-          {this.state.notes.map((note, index) => <List cards={note.content} key={index}/>)}
+          {this.state.notes.map((note, index) => <List cards={note.content} key={note.id}/>)}
         </ListItems>
       </Container>
     )

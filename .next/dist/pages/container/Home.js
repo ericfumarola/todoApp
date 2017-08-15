@@ -28,12 +28,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _DbFirebase = require('./../database/DbFirebase');
-
-var _firebase = require('firebase');
-
-var _firebase2 = _interopRequireDefault(_firebase);
-
 var _Search = require('./../components/Search');
 
 var _Search2 = _interopRequireDefault(_Search);
@@ -49,60 +43,69 @@ var _list = require('./../styled/list.styles');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _jsxFileName = '/Users/fernandocasaliba/GitHub/todoApp/pages/container/Home.js';
+// import {DbFirebase} from './../database/DbFirebase';
+// import firebase from 'firebase';
+
 
 // styles
 
 
 //
 // if (!firebase.apps.length) {
-//
+//   firebase.initializeApp(DbFirebase)
 // }
 
 var Home = function (_Component) {
   (0, _inherits3.default)(Home, _Component);
 
-  function Home() {
+  function Home(props) {
     (0, _classCallCheck3.default)(this, Home);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Home.__proto__ || (0, _getPrototypeOf2.default)(Home)).call(this));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Home.__proto__ || (0, _getPrototypeOf2.default)(Home)).call(this, props));
 
-    _this.app = _firebase2.default.initializeApp(_DbFirebase.DbFirebase), _this.db = _this.app.firebase.database().ref().child('notes');
+    _this.addNote = _this.addNote.bind(_this);
+
     _this.state = {
       notes: [{
-        content: ['saraza', 'tu vieja', 'sasas', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa'],
-        id: ['saraza', 'tu vieja', 'sasas', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa']
-      }, {
-        content: ['saraza', 'tu vieja', 'sasas', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa'],
-        id: ['saraza', 'tu vieja', 'sasas', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa', 'dsadsad d ada d ad asds d as da sda d sd sad asd sd a da da dasd as da das d ads  a sd sd asd as d asd d a da d ads d as dad asd asd as da sd asddasdasdsdasdasdsa']
+        content: ['sasasa 1'],
+        id: ['1']
       }]
-
     };
-
     return _this;
   }
 
   (0, _createClass3.default)(Home, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      var _this2 = this;
-
-      var prevNotes = this.state.notes;
-
-      this.database.on('value', function (snap) {
-        prevNotes.push({
-          content: snapshot.val().content,
-          id: snap.key
-        });
-
-        _this2.setState({
-          notes: prevNotes
-        });
-      });
+      // const prevNotes = this.state.notes;
+      //
+      // this.app = firebase.initializeApp(DbFirebase);
+      // this.database.on('value', (snap) => {
+      //   prevNotes.push({
+      //     content : snapshot.val().content,
+      //     id      : snap.key
+      //   })
+      //
+      //   this.setState({
+      //     notes:prevNotes
+      //   })
+      // })
     }
   }, {
     key: 'addNote',
     value: function addNote(note) {
-      this.database.push().set({ content: note });
+      // this.database.push().set({content:note})
+      var previousNotes = this.state.notes;
+      previousNotes.push({
+        id: previousNotes.length + 1,
+        content: note
+      });
+
+      this.setState({
+        notes: previousNotes
+      });
+
+      console.log(previousNotes);
     }
   }, {
     key: 'render',
@@ -110,22 +113,21 @@ var Home = function (_Component) {
       return _react2.default.createElement(_general.Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 87
+          lineNumber: 70
         }
-      }, _react2.default.createElement(_Search2.default, {
-        __source: {
+      }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
           fileName: _jsxFileName,
-          lineNumber: 88
+          lineNumber: 71
         }
       }), _react2.default.createElement(_list.ListItems, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 89
+          lineNumber: 72
         }
       }, this.state.notes.map(function (note, index) {
-        return _react2.default.createElement(_List2.default, { cards: note.content, key: index, __source: {
+        return _react2.default.createElement(_List2.default, { cards: note.content, key: note.id, __source: {
             fileName: _jsxFileName,
-            lineNumber: 90
+            lineNumber: 73
           }
         });
       })));

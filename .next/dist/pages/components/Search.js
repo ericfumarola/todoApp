@@ -50,23 +50,21 @@ var Search = function (_Component) {
       event.preventDefault();
 
       // Asigna nuevo state
-      _this.setState({ typed: event.target.value });
+      _this.setState({ cardContent: event.target.value });
     };
 
     _this.onSaveCard = function (event) {
       event.preventDefault();
-      var newCard = _this.state.typed;
+      var newCard = _this.state.cardContent;
+
+      _this.props.addNote(_this.state.cardContent);
 
       // Resetea value e input
-      _this.setState({ typed: '' });
-      _this.setState({ inputText: '' });
-
-      console.log(newCard);
+      _this.setState({ cardContent: '' });
     };
 
     _this.state = {
-      'inputText': '',
-      'typed': ''
+      'cardContent': ''
     };
 
     // Maneja el cambio de texto del input
@@ -85,28 +83,28 @@ var Search = function (_Component) {
     value: function render() {
       return _react2.default.createElement(_general.SearchBox, { onSubmit: this.onSaveCard, __source: {
           fileName: _jsxFileName,
-          lineNumber: 42
+          lineNumber: 40
         }
       }, _react2.default.createElement('input', { placeholder: 'Agregar texto...',
-        value: this.state.typed,
+        value: this.state.cardContent,
         onChange: this.onChangeText, __source: {
           fileName: _jsxFileName,
-          lineNumber: 44
+          lineNumber: 42
         }
       }), _react2.default.createElement(_general.Button, { primary: true,
         type: 'submit', __source: {
           fileName: _jsxFileName,
-          lineNumber: 48
+          lineNumber: 46
         }
       }, 'Guardar'), _react2.default.createElement('br', {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 51
+          lineNumber: 49
         }
       }), _react2.default.createElement(_general.NewCard, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 53
+          lineNumber: 51
         }
       }, this.state.typed));
     }
