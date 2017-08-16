@@ -28,6 +28,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _DbFirebase = require('./../database/DbFirebase');
+
 var _Search = require('./../components/Search');
 
 var _Search2 = _interopRequireDefault(_Search);
@@ -39,14 +41,13 @@ var _list = require('./../styled/list.styles');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _jsxFileName = '/Users/fernandocasaliba/GitHub/todoApp/pages/container/Home.js';
-// import {DbFirebase} from './../database/DbFirebase';
-// import firebase from 'firebase';
-
 
 // styles
 
 
 //
+console.log(_DbFirebase.fire);
+
 // if (!firebase.apps.length) {
 //   firebase.initializeApp(DbFirebase)
 // }
@@ -62,9 +63,12 @@ var Home = function (_Component) {
     _this.addNote = _this.addNote.bind(_this);
     _this.removeNote = _this.removeNote.bind(_this);
 
+    // this.app = fire;
+    // this.db = this.app.database().ref().child('notes');
+
     _this.state = {
       notes: [{
-        content: ['sasasa 1'],
+        content: ['local'],
         id: ['1']
       }]
     };
@@ -73,39 +77,47 @@ var Home = function (_Component) {
 
   (0, _createClass3.default)(Home, [{
     key: 'componentWillMount',
-    value: function componentWillMount() {}
-    // const prevNotes = this.state.notes;
-    //
-    // this.app = firebase.initializeApp(DbFirebase);
-    // this.database.on('value', (snap) => {
-    //   prevNotes.push({
-    //     content : snapshot.val().content,
-    //     id      : snap.key
-    //   })
-    //
-    //   this.setState({
-    //     notes:prevNotes
-    //   })
-    // })
+    value: function componentWillMount() {
+      var _this2 = this;
 
+      var previousNotes = this.state.notes;
 
-    // Add note
+      var nameRef = _DbFirebase.fire.database().ref().child('notes');
+
+      nameRef.on('note_added', function (snap) {
+        previousNotes.push({
+          id: snap.key,
+          content: snap.val().content
+        });
+
+        _this2.setState({
+          notes: previousNotes
+        });
+      });
+    }
+
+    // Add Note
 
   }, {
     key: 'addNote',
     value: function addNote(note) {
       // this.database.push().set({content:note})
-      var previousNotes = this.state.notes;
+      // const previousNotes = this.state.notes;
+      //
+      // previousNotes.push({
+      //   id : previousNotes.length + 1,
+      //   content: note
+      // });
+      //
+      // this.setState({
+      //   notes : previousNotes
+      // })
 
-      previousNotes.push({
-        id: previousNotes.length + 1,
-        content: note
-      });
-
-      this.setState({
-        notes: previousNotes
-      });
+      this.database.push().set({ content: note });
     }
+
+    // Remove Note
+
   }, {
     key: 'removeNote',
     value: function removeNote(id) {
@@ -118,32 +130,32 @@ var Home = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _react2.default.createElement(_general.Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 77
+          lineNumber: 84
         }
       }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
           fileName: _jsxFileName,
-          lineNumber: 78
+          lineNumber: 85
         }
       }), _react2.default.createElement(_list.ListItems, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 79
+          lineNumber: 86
         }
       }, this.state.notes.map(function (note) {
         return _react2.default.createElement('li', { id: note.id, key: note.id, __source: {
             fileName: _jsxFileName,
-            lineNumber: 80
+            lineNumber: 87
           }
         }, _react2.default.createElement('aside', { onClick: function onClick() {
-            return _this2.removeNote(note.id);
+            return _this3.removeNote(note.id);
           }, __source: {
             fileName: _jsxFileName,
-            lineNumber: 80
+            lineNumber: 87
           }
         }), note.content);
       })));

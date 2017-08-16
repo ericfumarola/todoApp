@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-// import {DbFirebase} from './../database/DbFirebase';
-// import firebase from 'firebase';
+import {fire} from './../database/DbFirebase';
 import Search from './../components/Search';
 
 // styles
@@ -8,6 +7,8 @@ import {Container} from './../styled/general.styles';
 import {ListItems} from './../styled/list.styles';
 
 //
+console.log(fire);
+
 // if (!firebase.apps.length) {
 //   firebase.initializeApp(DbFirebase)
 // }
@@ -19,12 +20,14 @@ class Home extends Component {
     this.addNote = this.addNote.bind(this);
     this.removeNote = this.removeNote.bind(this);
 
+    // this.app = fire;
+    // this.db = this.app.database().ref().child('notes');
 
     this.state = {
       notes : [
         {
           content: [
-            'sasasa 1'
+            'local'
           ],
           id : [
             '1'
@@ -35,36 +38,40 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    // const prevNotes = this.state.notes;
-    //
-    // this.app = firebase.initializeApp(DbFirebase);
-    // this.database.on('value', (snap) => {
-    //   prevNotes.push({
-    //     content : snapshot.val().content,
-    //     id      : snap.key
-    //   })
-    //
-    //   this.setState({
-    //     notes:prevNotes
-    //   })
-    // })
-  }
-
-  // Add note
-  addNote(note) {
-    // this.database.push().set({content:note})
     const previousNotes = this.state.notes;
 
-    previousNotes.push({
-      id : previousNotes.length + 1,
-      content: note
-    });
+    const nameRef = fire.database().ref().child('notes');
 
-    this.setState({
-      notes : previousNotes
+    nameRef.on('note_added', snap => {
+      previousNotes.push({
+        id : snap.key,
+        content: snap.val().content
+      });
+
+      this.setState({
+        notes : previousNotes
+      })
     })
   }
 
+  // Add Note
+  addNote(note) {
+    // this.database.push().set({content:note})
+    // const previousNotes = this.state.notes;
+    //
+    // previousNotes.push({
+    //   id : previousNotes.length + 1,
+    //   content: note
+    // });
+    //
+    // this.setState({
+    //   notes : previousNotes
+    // })
+
+    this.database.push().set({content:note})
+  }
+
+  // Remove Note
   removeNote(id){
     this.setState({
     	notes: this.state.notes.filter((el) => id !== el.id)
