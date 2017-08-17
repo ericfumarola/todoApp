@@ -51,20 +51,28 @@ class Home extends Component {
 
   // Add Note
   addNote(note) {
-    firebaseApp.database().ref().child('notes').push().set({content:note})
+    const dato = firebaseApp.database().ref().child('notes').push();
+    const key = dato.key;
+    const insertar = {
+      content: note,
+      key: key
+    }
+
+    dato.set(insertar)
   }
 
   // Remove Note
   removeNote(id){
+    console.log(id);
     this.setState({
-    	notes: this.state.notes.filter((el) => id !== el.id)
+    	notes: this.state.notes.filter((el) => id !== el.key)
     })
   }
 
 
   render () {
 
-    const allNotes = this.state.notes.map((note, i) => <li id={i} key={i}><aside onClick={() => this.removeNote(note.key)}></aside>{note.content} {note[i]}</li>)
+    const allNotes = this.state.notes.map((note, i) => <li id={note.key} key={note.key}><aside onClick={() => this.removeNote(note.key)}></aside>{note.content}</li>)
 
     return (
       <Container>

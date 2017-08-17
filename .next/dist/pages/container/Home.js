@@ -104,7 +104,14 @@ var Home = function (_Component) {
   }, {
     key: 'addNote',
     value: function addNote(note) {
-      _firebase2.default.database().ref().child('notes').push().set({ content: note });
+      var dato = _firebase2.default.database().ref().child('notes').push();
+      var key = dato.key;
+      var insertar = {
+        content: note,
+        key: key
+      };
+
+      dato.set(insertar);
     }
 
     // Remove Note
@@ -112,9 +119,10 @@ var Home = function (_Component) {
   }, {
     key: 'removeNote',
     value: function removeNote(id) {
+      console.log(id);
       this.setState({
         notes: this.state.notes.filter(function (el) {
-          return id !== el.id;
+          return id !== el.key;
         })
       });
     }
@@ -124,32 +132,32 @@ var Home = function (_Component) {
       var _this3 = this;
 
       var allNotes = this.state.notes.map(function (note, i) {
-        return _react2.default.createElement('li', { id: i, key: i, __source: {
+        return _react2.default.createElement('li', { id: note.key, key: note.key, __source: {
             fileName: _jsxFileName,
-            lineNumber: 67
+            lineNumber: 75
           }
         }, _react2.default.createElement('aside', { onClick: function onClick() {
             return _this3.removeNote(note.key);
           }, __source: {
             fileName: _jsxFileName,
-            lineNumber: 67
+            lineNumber: 75
           }
-        }), note.content, ' ', note[i]);
+        }), note.content);
       });
 
       return _react2.default.createElement(_general.Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 70
+          lineNumber: 78
         }
       }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
           fileName: _jsxFileName,
-          lineNumber: 71
+          lineNumber: 79
         }
       }), _react2.default.createElement(_list.ListItems, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 72
+          lineNumber: 80
         }
       }, allNotes));
     }
