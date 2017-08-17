@@ -48,7 +48,7 @@ class Search extends Component {
 
         <br/>
 
-        <NewCard>{this.state.typed}</NewCard>
+        <NewCard>{this.state.cardContent}</NewCard>
 
       </SearchBox>
     );

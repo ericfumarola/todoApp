@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import {fire} from './../database/DbFirebase';
+
+import firebaseApp from 'firebase';
+import config from './../database/DbFirebase';
 import Search from './../components/Search';
 
 // styles
 import {Container} from './../styled/general.styles';
 import {ListItems} from './../styled/list.styles';
 
-//
-console.log(fire);
-
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(DbFirebase)
-// }
 
 class Home extends Component {
   constructor(props) {
@@ -24,29 +20,28 @@ class Home extends Component {
     // this.db = this.app.database().ref().child('notes');
 
     this.state = {
-      notes : [
-        {
-          content: [
-            'local'
-          ],
-          id : [
-            '1'
-          ]
-        }
-      ]
+      notes : []
     }
   }
 
   componentWillMount() {
     const previousNotes = this.state.notes;
 
-    const nameRef = fire.database().ref().child('notes');
+    if (!firebaseApp.apps.length) {
+      firebaseApp.initializeApp(config);
+    }
 
-    nameRef.on('note_added', snap => {
-      previousNotes.push({
-        id : snap.key,
-        content: snap.val().content
-      });
+    const nameRef =  firebaseApp.database().ref().child('notes');
+
+
+    console.log(previousNotes);
+
+    nameRef.on('child_added', snapshot => {
+      previousNotes.push(snapshot.val());
+
+      const postId = previousNotes.key;
+
+      console.log(postId);
 
       this.setState({
         notes : previousNotes
@@ -56,19 +51,7 @@ class Home extends Component {
 
   // Add Note
   addNote(note) {
-    // this.database.push().set({content:note})
-    // const previousNotes = this.state.notes;
-    //
-    // previousNotes.push({
-    //   id : previousNotes.length + 1,
-    //   content: note
-    // });
-    //
-    // this.setState({
-    //   notes : previousNotes
-    // })
-
-    this.database.push().set({content:note})
+    firebaseApp.database().ref().child('notes').push().set({content:note})
   }
 
   // Remove Note
@@ -80,11 +63,14 @@ class Home extends Component {
 
 
   render () {
+
+    const allNotes = this.state.notes.map((note, i) => <li id={i} key={i}><aside onClick={() => this.removeNote(note.key)}></aside>{note.content} {note[i]}</li>)
+
     return (
       <Container>
         <Search addNote={this.addNote} />
         <ListItems>
-          {this.state.notes.map((note) => <li id={note.id} key={note.id}><aside  onClick={() => this.removeNote(note.id)}></aside>{note.content}</li>)}
+          {allNotes}
         </ListItems>
       </Container>
     )

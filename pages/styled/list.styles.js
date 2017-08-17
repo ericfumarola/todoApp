@@ -17,38 +17,18 @@ export const ListItems = styled.ul`
     position:relative;
     list-style-type:none;
     width: 100%;
-    margin-bottom:15px;
+    margin-bottom:20px;
     border-radius: 4px;
     min-height: 100px;
     break-inside: avoid;
     padding:1em;
-    overflow:hidden;
+
     font-size:1em;
     color:black;
     background-color:#eee;
     box-shadow: 0 0.1em 0.15em 0em rgba(0,0,0,0.3);
-    transition:all 150ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
-
-    &:hover,
-    &:focus {
-      outline:none;
-      box-shadow: 0 0.1em 0.15em 0.01em rgba(0,0,0,0.2),
-                  0 0.2em 0.35em 0em rgba(0,0,0,0.25);
-
-      aside {
-        opacity:1;
-
-        &:before {
-           transform:rotate(45deg);
-        }
-        &:after {
-          transform:rotate(-45deg);
-        }
-      }
-    }
 
     aside {
-      opacity:0;
       position:absolute;
       color:black;
       top:10px;
@@ -56,10 +36,6 @@ export const ListItems = styled.ul`
       width:15px;
       height:15px;
       cursor:pointer;
-      transition-property:opacity;
-      transition-timing-function:cubic-bezier(0.18, 0.89, 0.32, 1.28);
-      transition-duration:150ms;
-      transition-delay:120ms;
 
       &:before,
       &:after {
@@ -69,19 +45,23 @@ export const ListItems = styled.ul`
         top:50%;
         position:absolute;
         background-color:black;
-        transition-property:transform;
-        transition-timing-function:cubic-bezier(0.18, 0.89, 0.32, 1.28);
-        transition-duration:250ms;
-        transition-delay:150ms;
-        transform:rotate(0);
+        transition:all 300ms linear;
+        transform:rotate(45deg) translateY(-50%);
       }
 
-      &:before {
-        transform:rotate(0);
-      }
       &:after {
-        transform:rotate(-90deg);
+        transform:rotate(-45deg);
       }
+
+      &:hover {
+        &:before {
+           transform:rotate(-45deg);
+        }
+        &:after {
+          transform:rotate(45deg);
+        }
+      }
+
     }
   }
 `;

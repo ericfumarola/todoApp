@@ -1,12 +1,11 @@
 'use strict';
 
-var _firebase = require('firebase');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// import firebase from 'firebase';
 
-var _firebase2 = _interopRequireDefault(_firebase);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var config = {
+exports.default = {
   apiKey: 'AIzaSyC6NlAzYNaxGhvUNy3Kgs1Bal1r4X6Tims',
   authDomain: 'reacttest-6b3a6.firebaseapp.com',
   databaseURL: 'https://reacttest-6b3a6.firebaseio.com',
@@ -15,6 +14,6 @@ var config = {
   messagingSenderId: '1082647419812'
 };
 
-if (!_firebase2.default.apps.length) {
-  var fireB = _firebase2.default.initializeApp(config);
-}
+// if (!firebase.apps.length) {
+//   const fire = firebase.initializeApp(config);
+// }

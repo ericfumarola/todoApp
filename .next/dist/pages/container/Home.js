@@ -28,7 +28,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _firebase = require('firebase');
+
+var _firebase2 = _interopRequireDefault(_firebase);
+
 var _DbFirebase = require('./../database/DbFirebase');
+
+var _DbFirebase2 = _interopRequireDefault(_DbFirebase);
 
 var _Search = require('./../components/Search');
 
@@ -45,13 +51,6 @@ var _jsxFileName = '/Users/fernandocasaliba/GitHub/todoApp/pages/container/Home.
 // styles
 
 
-//
-console.log(_DbFirebase.fire);
-
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(DbFirebase)
-// }
-
 var Home = function (_Component) {
   (0, _inherits3.default)(Home, _Component);
 
@@ -67,10 +66,7 @@ var Home = function (_Component) {
     // this.db = this.app.database().ref().child('notes');
 
     _this.state = {
-      notes: [{
-        content: ['local'],
-        id: ['1']
-      }]
+      notes: []
     };
     return _this;
   }
@@ -82,13 +78,20 @@ var Home = function (_Component) {
 
       var previousNotes = this.state.notes;
 
-      var nameRef = _DbFirebase.fire.database().ref().child('notes');
+      if (!_firebase2.default.apps.length) {
+        _firebase2.default.initializeApp(_DbFirebase2.default);
+      }
 
-      nameRef.on('note_added', function (snap) {
-        previousNotes.push({
-          id: snap.key,
-          content: snap.val().content
-        });
+      var nameRef = _firebase2.default.database().ref().child('notes');
+
+      console.log(previousNotes);
+
+      nameRef.on('child_added', function (snapshot) {
+        previousNotes.push(snapshot.val());
+
+        var postId = previousNotes.key;
+
+        console.log(postId);
 
         _this2.setState({
           notes: previousNotes
@@ -101,19 +104,7 @@ var Home = function (_Component) {
   }, {
     key: 'addNote',
     value: function addNote(note) {
-      // this.database.push().set({content:note})
-      // const previousNotes = this.state.notes;
-      //
-      // previousNotes.push({
-      //   id : previousNotes.length + 1,
-      //   content: note
-      // });
-      //
-      // this.setState({
-      //   notes : previousNotes
-      // })
-
-      this.database.push().set({ content: note });
+      _firebase2.default.database().ref().child('notes').push().set({ content: note });
     }
 
     // Remove Note
@@ -132,33 +123,35 @@ var Home = function (_Component) {
     value: function render() {
       var _this3 = this;
 
+      var allNotes = this.state.notes.map(function (note, i) {
+        return _react2.default.createElement('li', { id: i, key: i, __source: {
+            fileName: _jsxFileName,
+            lineNumber: 67
+          }
+        }, _react2.default.createElement('aside', { onClick: function onClick() {
+            return _this3.removeNote(note.key);
+          }, __source: {
+            fileName: _jsxFileName,
+            lineNumber: 67
+          }
+        }), note.content, ' ', note[i]);
+      });
+
       return _react2.default.createElement(_general.Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 84
+          lineNumber: 70
         }
       }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
           fileName: _jsxFileName,
-          lineNumber: 85
+          lineNumber: 71
         }
       }), _react2.default.createElement(_list.ListItems, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 86
+          lineNumber: 72
         }
-      }, this.state.notes.map(function (note) {
-        return _react2.default.createElement('li', { id: note.id, key: note.id, __source: {
-            fileName: _jsxFileName,
-            lineNumber: 87
-          }
-        }, _react2.default.createElement('aside', { onClick: function onClick() {
-            return _this3.removeNote(note.id);
-          }, __source: {
-            fileName: _jsxFileName,
-            lineNumber: 87
-          }
-        }), note.content);
-      })));
+      }, allNotes));
     }
   }]);
 

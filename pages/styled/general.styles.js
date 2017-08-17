@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
-  max-width:900px;
+  max-width:800px;
   position:relaitve;
   display:flex;
   align-items:flex-start;
@@ -15,7 +15,7 @@ export const SearchBox = styled.form`
   width:100%;
   display:flex;
   flex-direction:row;
-  flex-wrap:wrap;
+  flex-wrap:wrap; 
 
   input {
     font-family: 'Raleway', sans-serif;

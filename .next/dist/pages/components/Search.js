@@ -106,7 +106,7 @@ var Search = function (_Component) {
           fileName: _jsxFileName,
           lineNumber: 51
         }
-      }, this.state.typed));
+      }, this.state.cardContent));
     }
   }]);
 
