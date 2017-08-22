@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "firebase": "^4.2.0",
-    "next": "^2.4.9",
+    "next": "^3.0.6",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "styled-components": "^2.1.1"

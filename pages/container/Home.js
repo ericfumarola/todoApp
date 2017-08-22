@@ -8,7 +8,7 @@ import Search from './../components/Search';
 import {Container} from './../styled/general.styles';
 import {ListItems} from './../styled/list.styles';
 
-// inicializa Firebase
+// inicializa Firebase (si ya existe no lo vuelve a crear)
 if (!firebaseApp.apps.length) {
   firebaseApp.initializeApp(config);
 }
@@ -20,6 +20,7 @@ class Home extends Component {
     this.addNote = this.addNote.bind(this);
     this.removeNote = this.removeNote.bind(this);
 
+    // Inicializa firebase
     this.database = firebaseApp.database().ref().child('notes');
 
     this.state = {
@@ -28,44 +29,38 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    const previousNotes = this.state.notes;
+    const notaPrevia = this.state.notes;
 
     // Add note
     this.database.on('child_added', snapshot => {
-      previousNotes.push(snapshot.val());
+      notaPrevia.push(snapshot.val());
 
+      // actualiza nuevo estado y nota
       this.setState({
-        notes : previousNotes
+        notes : notaPrevia
       })
     })
 
     // Remove Note
     this.database.on('child_removed', snapshot => {
-      // for(var i=0; i < previousNotes.length; i++){
-      //   if(previousNotes[i].key === snapshot.key){
-      //     previousNotes.splice(i, 1);
-      //   }
-      // }
+      // actualiza nuevo estado y nota
       this.setState({
       	notes: this.state.notes.filter((el) => snapshot.key !== el.key)
       })
-
-      // this.setState({
-      //   notes: previousNotes
-      // })
-
-      console.log(this.state.notes);
     })
   }
 
   // Add Note
   addNote(note) {
-    const data = this.database.push();
-    const key = data.key;
-    data.set({
-      content: note,
-      key: key
-    })
+    // si el texto tiene más de un val se agrega
+    if (note.length > 0) {
+      const data = this.database.push();
+      const key = data.key;
+      data.set({
+        content: note,
+        key: key
+      })
+    }
   }
 
   // Remove Note

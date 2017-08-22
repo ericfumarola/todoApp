@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+// import {media, sizes, acc, label}  from './mediaqueries.styled';
 
 export const ListItems = styled.ul`
   position:relative;
@@ -27,6 +28,8 @@ export const ListItems = styled.ul`
     color:black;
     background-color:#eee;
     box-shadow: 0 0.1em 0.15em 0em rgba(0,0,0,0.3);
+
+    
 
     aside {
       position:absolute;

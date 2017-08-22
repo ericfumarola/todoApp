@@ -51,7 +51,7 @@ var _jsxFileName = '/Users/fernandocasaliba/GitHub/todoApp/pages/container/Home.
 // styles
 
 
-// inicializa Firebase
+// inicializa Firebase (si ya existe no lo vuelve a crear)
 if (!_firebase2.default.apps.length) {
   _firebase2.default.initializeApp(_DbFirebase2.default);
 }
@@ -67,6 +67,7 @@ var Home = function (_Component) {
     _this.addNote = _this.addNote.bind(_this);
     _this.removeNote = _this.removeNote.bind(_this);
 
+    // Inicializa firebase
     _this.database = _firebase2.default.database().ref().child('notes');
 
     _this.state = {
@@ -80,35 +81,26 @@ var Home = function (_Component) {
     value: function componentWillMount() {
       var _this2 = this;
 
-      var previousNotes = this.state.notes;
+      var notaPrevia = this.state.notes;
 
       // Add note
       this.database.on('child_added', function (snapshot) {
-        previousNotes.push(snapshot.val());
+        notaPrevia.push(snapshot.val());
 
+        // actualiza nuevo estado y nota
         _this2.setState({
-          notes: previousNotes
+          notes: notaPrevia
         });
       });
 
       // Remove Note
       this.database.on('child_removed', function (snapshot) {
-        // for(var i=0; i < previousNotes.length; i++){
-        //   if(previousNotes[i].key === snapshot.key){
-        //     previousNotes.splice(i, 1);
-        //   }
-        // }
+        // actualiza nuevo estado y nota
         _this2.setState({
           notes: _this2.state.notes.filter(function (el) {
             return snapshot.key !== el.key;
           })
         });
-
-        // this.setState({
-        //   notes: previousNotes
-        // })
-
-        console.log(_this2.state.notes);
       });
     }
 
@@ -117,12 +109,15 @@ var Home = function (_Component) {
   }, {
     key: 'addNote',
     value: function addNote(note) {
-      var data = this.database.push();
-      var key = data.key;
-      data.set({
-        content: note,
-        key: key
-      });
+      // si el texto tiene más de un val se agrega
+      if (note.length > 0) {
+        var data = this.database.push();
+        var key = data.key;
+        data.set({
+          content: note,
+          key: key
+        });
+      }
     }
 
     // Remove Note
@@ -140,13 +135,13 @@ var Home = function (_Component) {
       var allNotes = this.state.notes.map(function (note) {
         return _react2.default.createElement('li', { id: note.key, key: note.key, __source: {
             fileName: _jsxFileName,
-            lineNumber: 79
+            lineNumber: 74
           }
         }, _react2.default.createElement('aside', { onClick: function onClick() {
             return _this3.removeNote(note.key);
           }, __source: {
             fileName: _jsxFileName,
-            lineNumber: 79
+            lineNumber: 74
           }
         }), note.content);
       }).reverse();
@@ -154,16 +149,16 @@ var Home = function (_Component) {
       return _react2.default.createElement(_general.Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 82
+          lineNumber: 77
         }
       }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
           fileName: _jsxFileName,
-          lineNumber: 83
+          lineNumber: 78
         }
       }), _react2.default.createElement(_list.ListItems, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 84
+          lineNumber: 79
         }
       }, allNotes));
     }
