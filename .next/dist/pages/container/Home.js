@@ -59,13 +59,15 @@ if (!_firebase2.default.apps.length) {
 var Home = function (_Component) {
   (0, _inherits3.default)(Home, _Component);
 
-  function Home(props) {
+  function Home() {
     (0, _classCallCheck3.default)(this, Home);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (Home.__proto__ || (0, _getPrototypeOf2.default)(Home)).call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Home.__proto__ || (0, _getPrototypeOf2.default)(Home)).call(this));
 
     _this.addNote = _this.addNote.bind(_this);
     _this.removeNote = _this.removeNote.bind(_this);
+
+    _this.database = _firebase2.default.database().ref().child('notes');
 
     _this.state = {
       notes: []
@@ -80,10 +82,8 @@ var Home = function (_Component) {
 
       var previousNotes = this.state.notes;
 
-      var nameRef = _firebase2.default.database().ref().child('notes');
-
       // Add note
-      nameRef.on('child_added', function (snapshot) {
+      this.database.on('child_added', function (snapshot) {
         previousNotes.push(snapshot.val());
 
         _this2.setState({
@@ -92,12 +92,23 @@ var Home = function (_Component) {
       });
 
       // Remove Note
-      nameRef.on('child_removed', function (snapshot) {
-        previousNotes.push(snapshot.val());
-
+      this.database.on('child_removed', function (snapshot) {
+        // for(var i=0; i < previousNotes.length; i++){
+        //   if(previousNotes[i].key === snapshot.key){
+        //     previousNotes.splice(i, 1);
+        //   }
+        // }
         _this2.setState({
-          notes: previousNotes
+          notes: _this2.state.notes.filter(function (el) {
+            return snapshot.key !== el.key;
+          })
         });
+
+        // this.setState({
+        //   notes: previousNotes
+        // })
+
+        console.log(_this2.state.notes);
       });
     }
 
@@ -106,60 +117,53 @@ var Home = function (_Component) {
   }, {
     key: 'addNote',
     value: function addNote(note) {
-      var dato = _firebase2.default.database().ref().child('notes').push();
-      var key = dato.key;
-      var insertar = {
+      var data = this.database.push();
+      var key = data.key;
+      data.set({
         content: note,
         key: key
-      };
-      dato.set(insertar);
+      });
     }
 
     // Remove Note
 
   }, {
     key: 'removeNote',
-    value: function removeNote(note, id) {
-      var dato = _firebase2.default.database().ref().child('notes').push();
-      var key = dato.key;
-      console.log(key);
-      var remove = {
-        note: id
-      };
-      dato.remove(remove);
+    value: function removeNote(noteId) {
+      this.database.child(noteId).remove();
     }
   }, {
     key: 'render',
     value: function render() {
       var _this3 = this;
 
-      var allNotes = this.state.notes.map(function (note, i) {
+      var allNotes = this.state.notes.map(function (note) {
         return _react2.default.createElement('li', { id: note.key, key: note.key, __source: {
             fileName: _jsxFileName,
-            lineNumber: 77
+            lineNumber: 79
           }
         }, _react2.default.createElement('aside', { onClick: function onClick() {
             return _this3.removeNote(note.key);
           }, __source: {
             fileName: _jsxFileName,
-            lineNumber: 77
+            lineNumber: 79
           }
         }), note.content);
-      });
+      }).reverse();
 
       return _react2.default.createElement(_general.Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 80
+          lineNumber: 82
         }
       }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
           fileName: _jsxFileName,
-          lineNumber: 81
+          lineNumber: 83
         }
       }), _react2.default.createElement(_list.ListItems, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 82
+          lineNumber: 84
         }
       }, allNotes));
     }

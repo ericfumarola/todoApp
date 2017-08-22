@@ -14,11 +14,13 @@ if (!firebaseApp.apps.length) {
 }
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.addNote = this.addNote.bind(this);
     this.removeNote = this.removeNote.bind(this);
+
+    this.database = firebaseApp.database().ref().child('notes');
 
     this.state = {
       notes : []
@@ -28,10 +30,8 @@ class Home extends Component {
   componentWillMount() {
     const previousNotes = this.state.notes;
 
-    const nameRef =  firebaseApp.database().ref().child('notes');
-
     // Add note
-    nameRef.on('child_added', snapshot => {
+    this.database.on('child_added', snapshot => {
       previousNotes.push(snapshot.val());
 
       this.setState({
@@ -40,41 +40,43 @@ class Home extends Component {
     })
 
     // Remove Note
-    nameRef.on('child_removed', snapshot => {
-      previousNotes.push(snapshot.val());
-
+    this.database.on('child_removed', snapshot => {
+      // for(var i=0; i < previousNotes.length; i++){
+      //   if(previousNotes[i].key === snapshot.key){
+      //     previousNotes.splice(i, 1);
+      //   }
+      // }
       this.setState({
-      	notes: previousNotes
+      	notes: this.state.notes.filter((el) => snapshot.key !== el.key)
       })
+
+      // this.setState({
+      //   notes: previousNotes
+      // })
+
+      console.log(this.state.notes);
     })
   }
 
   // Add Note
   addNote(note) {
-    const dato = firebaseApp.database().ref().child('notes').push();
-    const key = dato.key;
-    const insertar = {
+    const data = this.database.push();
+    const key = data.key;
+    data.set({
       content: note,
       key: key
-    }
-    dato.set(insertar)
+    })
   }
 
   // Remove Note
-  removeNote(note, id){
-    const dato = firebaseApp.database().ref().child('notes').push();
-    const key = dato.key;
-    console.log(key);
-    const remove = {
-      note: id
-    }
-    dato.remove(remove)
+  removeNote(noteId){
+    this.database.child(noteId).remove();
   }
 
 
   render () {
 
-    const allNotes = this.state.notes.map((note, i) => <li id={note.key} key={note.key}><aside onClick={() => this.removeNote(note.key)}></aside>{note.content}</li>)
+    const allNotes = this.state.notes.map((note) => <li id={note.key} key={note.key}><aside onClick={() => this.removeNote(note.key)}></aside>{note.content}</li>).reverse()
 
     return (
       <Container>
