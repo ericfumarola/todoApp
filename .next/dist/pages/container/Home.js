@@ -81,15 +81,15 @@ var Home = function (_Component) {
     value: function componentWillMount() {
       var _this2 = this;
 
-      var notaPrevia = this.state.notes;
+      //const notaPrevia = this.state.notes;
 
       // Add note
       this.database.on('child_added', function (snapshot) {
-        notaPrevia.push(snapshot.val());
+        _this2.state.notes.push(snapshot.val());
 
         // actualiza nuevo estado y nota
         _this2.setState({
-          notes: notaPrevia
+          notes: _this2.state.notes
         });
       });
 
@@ -135,13 +135,13 @@ var Home = function (_Component) {
       var allNotes = this.state.notes.map(function (note) {
         return _react2.default.createElement('li', { id: note.key, key: note.key, __source: {
             fileName: _jsxFileName,
-            lineNumber: 74
+            lineNumber: 73
           }
         }, _react2.default.createElement('aside', { onClick: function onClick() {
             return _this3.removeNote(note.key);
           }, __source: {
             fileName: _jsxFileName,
-            lineNumber: 74
+            lineNumber: 73
           }
         }), note.content);
       }).reverse();
@@ -149,16 +149,16 @@ var Home = function (_Component) {
       return _react2.default.createElement(_general.Container, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 77
+          lineNumber: 76
         }
       }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
           fileName: _jsxFileName,
-          lineNumber: 78
+          lineNumber: 77
         }
       }), _react2.default.createElement(_list.ListItems, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 79
+          lineNumber: 78
         }
       }, allNotes));
     }

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-// import {media, sizes, acc, label}  from './mediaqueries.styled';
+import {media}  from './mediaqueries.styled';
 
 export const ListItems = styled.ul`
   position:relative;
@@ -13,6 +13,12 @@ export const ListItems = styled.ul`
   column-gap: 20px;
   height: 100%;
 
+  ${media.xs`
+    column-count: 1;
+    padding-top:1.75em;
+    padding-bottom:2em;
+  `}
+
   li {
     display:inline-block;
     position:relative;
@@ -22,14 +28,12 @@ export const ListItems = styled.ul`
     border-radius: 4px;
     min-height: 100px;
     break-inside: avoid;
-    padding:1em;
+    padding:1em 1.5em 1em 1em;
 
     font-size:1em;
     color:black;
     background-color:#eee;
     box-shadow: 0 0.1em 0.15em 0em rgba(0,0,0,0.3);
-
-    
 
     aside {
       position:absolute;
@@ -39,6 +43,11 @@ export const ListItems = styled.ul`
       width:15px;
       height:15px;
       cursor:pointer;
+
+      ${media.xs`
+        width:20px;
+        height:20px;
+      `}
 
       &:before,
       &:after {

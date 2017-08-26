@@ -29,15 +29,15 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    const notaPrevia = this.state.notes;
+    //const notaPrevia = this.state.notes;
 
     // Add note
     this.database.on('child_added', snapshot => {
-      notaPrevia.push(snapshot.val());
+      this.state.notes.push(snapshot.val());
 
       // actualiza nuevo estado y nota
       this.setState({
-        notes : notaPrevia
+        notes : this.state.notes
       })
     })
 
@@ -67,7 +67,6 @@ class Home extends Component {
   removeNote(noteId){
     this.database.child(noteId).remove();
   }
-
 
   render () {
 

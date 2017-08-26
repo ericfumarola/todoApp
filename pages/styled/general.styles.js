@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {media}  from './mediaqueries.styled';
 
 export const Container = styled.section`
   max-width:800px;
@@ -9,13 +10,17 @@ export const Container = styled.section`
   align-self:flex-start;
   margin:auto;
   padding:2em;
+  ${media.xs`
+    padding:1em;
+    width:100%;
+  `}
 `;
 
 export const SearchBox = styled.form`
   width:100%;
   display:flex;
   flex-direction:row;
-  flex-wrap:wrap; 
+  flex-wrap:wrap;
 
   input {
     font-family: 'Raleway', sans-serif;
@@ -27,6 +32,11 @@ export const SearchBox = styled.form`
     padding:.7em;
     outline:none;
     margin-right:.5em;
+
+    ${media.xs`
+      width:100%;
+      margin-right:0;
+    `}
 
     &:hover,
     &:focus {
@@ -45,9 +55,15 @@ export const NewCard = styled.article`
   background-color:#fcffd4;
   box-shadow: 0 .1em .2em 0 rgba(0,0,0,0.3);
   margin:1em 0;
+
+  ${media.xs`
+    font-size:1.5em;
+    margin:.75em 0;
+  `}
 `;
 
 export const Button = styled.button`
+  position:relative;
   background-color: ${props => props.primary ? '#4171e2' : 'red'};
   border-radius: 4px;
   min-width:200px;
@@ -61,6 +77,13 @@ export const Button = styled.button`
   outline:none;
   box-shadow: 0 .1em .1em .03em rgba(0,0,0,0.3);
   transition:all 350ms linear;
+
+  ${media.xs`
+    width:100%;
+    height:50px;
+    margin-top:1em;
+    margin-bottom:1em;
+  `}
 
   &:hover {
     background-color: ${props => props.primary ? '#e24141' : '#4171e2'};
