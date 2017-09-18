@@ -9,7 +9,7 @@ class Search extends Component {
 
     // Set initial state
     this.state = {
-      'cardContent': ''
+      cardContent: ''
     };
 
     // Maneja el cambio de texto del input
@@ -27,9 +27,11 @@ class Search extends Component {
   // Guardar tarjeta
   onSaveCard = (event) => {
     event.preventDefault();
-    let newCard = this.state.cardContent;
+    
+    let new_note = this.state.cardContent;
 
-    this.props.addNote(this.state.cardContent)
+    // Le pasa la nota a la funcion addNote
+    this.props.addNote(new_note)
 
     // Resetea value e input
     this.setState({ cardContent: '' });
@@ -39,12 +41,12 @@ class Search extends Component {
     return (
       <SearchBox onSubmit={this.onSaveCard}>
 
-        <input  placeholder="Agregar texto..."
+        <input
+          placeholder="Agregar texto..."
           value={this.state.cardContent}
           onChange={this.onChangeText} />
 
-        <Button primary
-        type="submit">Guardar</Button>
+        <Button primary type="submit">Guardar</Button>
 
         <br/>
 

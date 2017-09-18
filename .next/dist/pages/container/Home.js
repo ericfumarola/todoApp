@@ -132,6 +132,7 @@ var Home = function (_Component) {
     value: function render() {
       var _this3 = this;
 
+      // mapea nota por nota
       var allNotes = this.state.notes.map(function (note) {
         return _react2.default.createElement('li', { id: note.key, key: note.key, __source: {
             fileName: _jsxFileName,

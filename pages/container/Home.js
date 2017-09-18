@@ -69,8 +69,8 @@ class Home extends Component {
   }
 
   render () {
-
-    const allNotes = this.state.notes.map((note) => <li id={note.key} key={note.key}><aside onClick={() => this.removeNote(note.key)}></aside>{note.content}</li>).reverse()
+    // mapea nota por nota
+    const allNotes = this.state.notes.map((note) => <li id={note.key} key={note.key}><aside onClick={() => this.removeNote(note.key) }></aside>{note.content}</li>).reverse();
 
     return (
       <Container>
