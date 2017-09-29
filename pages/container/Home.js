@@ -24,7 +24,8 @@ class Home extends Component {
     this.database = firebaseApp.database().ref().child('notes');
 
     this.state = {
-      notes : []
+      notes : [],
+      archivedNotes : []
     }
   }
 
@@ -43,6 +44,8 @@ class Home extends Component {
 
     // Remove Note
     this.database.on('child_removed', snapshot => {
+      this.state.notes.push(snapshot.val());
+
       // actualiza nuevo estado y nota
       this.setState({
       	notes: this.state.notes.filter((el) => snapshot.key !== el.key)
@@ -65,21 +68,31 @@ class Home extends Component {
 
   // Remove Note
   removeNote(noteId){
+    // this.database.child(noteId).remove();
     this.database.child(noteId).remove();
   }
 
   render () {
-    // mapea nota por nota
-    const allNotes = this.state.notes.map((note) => <li id={note.key} key={note.key}><aside onClick={() => this.removeNote(note.key) }></aside>{note.content}</li>).reverse();
+    if (!this.state.notes.length > 0) {
 
-    return (
-      <Container>
-        <Search addNote={this.addNote} />
-        <ListItems>
-          {allNotes}
-        </ListItems>
-      </Container>
-    )
+      return <p className="text-center">Cargando empleados...</p>
+
+
+    } else {
+      // mapea nota por nota
+      const allNotes = this.state.notes.map((note) => <li id={note.key} key={note.key}><aside onClick={() => this.removeNote(note.key) }></aside>{note.content}</li>).reverse();
+
+      return (
+        <Container>
+          <Search addNote={this.addNote} />
+          <ListItems>
+            {allNotes}
+          </ListItems>
+        </Container>
+      )
+    }
+
+
   }
 }
 

@@ -71,7 +71,8 @@ var Home = function (_Component) {
     _this.database = _firebase2.default.database().ref().child('notes');
 
     _this.state = {
-      notes: []
+      notes: [],
+      archivedNotes: []
     };
     return _this;
   }
@@ -95,6 +96,8 @@ var Home = function (_Component) {
 
       // Remove Note
       this.database.on('child_removed', function (snapshot) {
+        _this2.state.notes.push(snapshot.val());
+
         // actualiza nuevo estado y nota
         _this2.setState({
           notes: _this2.state.notes.filter(function (el) {
@@ -125,6 +128,7 @@ var Home = function (_Component) {
   }, {
     key: 'removeNote',
     value: function removeNote(noteId) {
+      // this.database.child(noteId).remove();
       this.database.child(noteId).remove();
     }
   }, {
@@ -132,36 +136,45 @@ var Home = function (_Component) {
     value: function render() {
       var _this3 = this;
 
-      // mapea nota por nota
-      var allNotes = this.state.notes.map(function (note) {
-        return _react2.default.createElement('li', { id: note.key, key: note.key, __source: {
-            fileName: _jsxFileName,
-            lineNumber: 73
-          }
-        }, _react2.default.createElement('aside', { onClick: function onClick() {
-            return _this3.removeNote(note.key);
-          }, __source: {
-            fileName: _jsxFileName,
-            lineNumber: 73
-          }
-        }), note.content);
-      }).reverse();
+      if (!this.state.notes.length > 0) {
 
-      return _react2.default.createElement(_general.Container, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 76
-        }
-      }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
-          fileName: _jsxFileName,
-          lineNumber: 77
-        }
-      }), _react2.default.createElement(_list.ListItems, {
-        __source: {
-          fileName: _jsxFileName,
-          lineNumber: 78
-        }
-      }, allNotes));
+        return _react2.default.createElement('p', { className: 'text-center', __source: {
+            fileName: _jsxFileName,
+            lineNumber: 78
+          }
+        }, 'Cargando empleados...');
+      } else {
+        // mapea nota por nota
+        var allNotes = this.state.notes.map(function (note) {
+          return _react2.default.createElement('li', { id: note.key, key: note.key, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 83
+            }
+          }, _react2.default.createElement('aside', { onClick: function onClick() {
+              return _this3.removeNote(note.key);
+            }, __source: {
+              fileName: _jsxFileName,
+              lineNumber: 83
+            }
+          }), note.content);
+        }).reverse();
+
+        return _react2.default.createElement(_general.Container, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 86
+          }
+        }, _react2.default.createElement(_Search2.default, { addNote: this.addNote, __source: {
+            fileName: _jsxFileName,
+            lineNumber: 87
+          }
+        }), _react2.default.createElement(_list.ListItems, {
+          __source: {
+            fileName: _jsxFileName,
+            lineNumber: 88
+          }
+        }, allNotes));
+      }
     }
   }]);
 
